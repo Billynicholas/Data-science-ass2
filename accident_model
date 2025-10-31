@@ -1,0 +1,35 @@
+# Step 1: Import libraries
+import pandas as pd # pyright: ignore[reportMissingModuleSource]
+from sklearn.model_selection import train_test_split # type: ignore
+from sklearn.linear_model import LinearRegression # pyright: ignore[reportMissingModuleSource]
+import joblib # pyright: ignore[reportMissingImports]
+
+# Step 2: Load dataset (replace with your dataset path)
+data = pd.read_csv("road_accident_data.csv")
+
+# Step 3: Define independent and dependent variables
+X = data[['vehicle_speed', 'driver_age', 'road_condition', 'weather_condition', 'light_condition']]
+y = data['accident_severity']
+
+# Step 4: Split data for training and testing
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Step 5: Train model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Step 6: Save model for future use
+joblib.dump(model, "accident_severity_model.pkl")
+
+# Step 7: Test model on sample input
+sample = pd.DataFrame({
+    'vehicle_speed': [80],
+    'driver_age': [35],
+    'road_condition': [2],   # 1 = good, 2 = moderate, 3 = poor
+    'weather_condition': [3], # 1 = clear, 2 = cloudy, 3 = rainy
+    'light_condition': [2]   # 1 = daylight, 2 = night
+})
+
+prediction = model.predict(sample)
+print("Predicted Accident Severity:", prediction[0])
+a=)
